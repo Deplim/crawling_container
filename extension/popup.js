@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     link.style.display="block";
     link.style.textAlign="center";
     // onClick's logic below:
+
     link.addEventListener('click', function() {
-        hellYeah('xxx');
+        On_Off();
     });
     link.addEventListener('mouseover', function(e) {
         e.target.style.cursor="pointer";
@@ -14,6 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         e.target.style.cursor="default";
     });
 });
-function hellYeah(text) {
-  document.getElementById("text-holder").innerHTML = text;
+function On_Off() {
+    var text="default";
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {data: text}, function(response) {
+        });
+    });
 }
