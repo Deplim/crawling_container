@@ -5,6 +5,7 @@ var target_item_type;
 var current_selector=0;
 
 var ui_html=`<img id="backward" src="https://github.com/Deplim/crawling_container/blob/master/icon/backward.png?raw=true">
+		<img id="get" src="https://github.com/Deplim/crawling_container/blob/master/icon/get2.png?raw=true">
 		<img id="save" src="https://github.com/Deplim/crawling_container/blob/master/icon/save.png?raw=true">
 		<img id="add" src="https://github.com/Deplim/crawling_container/blob/master/icon/add.png?raw=true">
 		<textarea id="preview"></textarea>`

@@ -46,6 +46,13 @@
   width:40px;
   height:40px;
 }
+#get{
+  position: absolute;
+  right:95px;
+  top:7px;
+  width:40px;
+  height:40px;
+}
 #save{
   position: absolute;
   right:50px;
