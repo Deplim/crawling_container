@@ -1,7 +1,10 @@
-var ui_html4=`<div style="overflow:scroll; width:350px; height:200px;">
+var ui_html4=`<div id="storage_list">
 			<table></table>
 		</div>`
 
-var  = document.createElement('div');
-editor.id = "editor";
-document.body.appendChild(editor);
+var storage = document.createElement('div');
+storage.id = "storage";
+document.body.appendChild(storage);
+
+storage.innerHTML=ui_html4
+
