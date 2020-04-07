@@ -23,9 +23,9 @@
         "<all_urls>"
       ],
       "js": [
+      	"jquery-3.4.1.min.js",
         "crawling_container.js",
-        "ui_maker.js",
-        "library/html2canvas.min.js"
+        "ui_maker.js"
       ],
       "css": ["decorating.css"]
     }
