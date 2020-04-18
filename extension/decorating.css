@@ -28,6 +28,9 @@
 }
 
 
+
+
+
 #editor{
   position: fixed;
   left:50px;
@@ -82,11 +85,15 @@
 }
 
 
+
+
+
+
 #select_opt{
   position: fixed;
   top:55px;
   width:650px;
-  height:250px;
+  height:300px;
 
   background-color:#c5e0b4; 
   visibility:hidden;
@@ -94,20 +101,12 @@
 
   font-family:"Poppins" ,sans-serif;
 }
-#select_space{
-  position: absolute;
-  top:0px;
-  width:575px;
-  height:250px;
-
-  background-color:#c5e0b4; 
-}
 #select_property{
   position: absolute;
   left:5px;
   top:5px;
   width:190px;
-  height:240px;
+  height:290px;
 
 }
 #select_attribute{
@@ -115,7 +114,7 @@
   left:195px;
   top:5px;
   width:190px;
-  height:240px;
+  height:290px;
 
   padding-left:5px;
   border-left:2px solid gray;
@@ -125,7 +124,7 @@
   left:385px;
   top:5px;
   width:190px;
-  height:240px;
+  height:290px;
 
   padding-left:5px;
   border-left:2px solid gray;
@@ -135,21 +134,37 @@
   left:5px;
   top:5px;
   width:190px;
-  height:240px;
+  height:290px;
 
   border-right:2px solid gray;
 }
-
-
+#insert_option{
+	position: absolute;
+	left:5px;
+	top:5px;
+	width:550px; 
+	height:290px;
+}
 #storage_list{
-	overflow:hidden; 
-	width:350px; 
-	height:200px;
+	position: absolute;
+	left:5px;
+	top:5px;
+	width:550px; 
+	height:290px;
 
 	border:2px solid gray;
-
-	visibility:hidden;
 }
+#storage_list::-webkit-scrollbar{
+	display: none; 
+}
+#storage_list_table{
+	margin:0px;
+	width:100%;
+}
+
+
+
+
 
 
 .black_btn{
@@ -157,11 +172,23 @@
   border:2px solid #383838;
   right:5px;
   top:5px;
+  left:auto;
   width:50px;
-  height:240px;
+  height:290px;
   padding:10px;
 
   background-color:transparent;
 
   font-size:14px;
+}
+
+.ta{
+	width:90%;
+	height:100px;
+	display:inline-block;
+  padding: 0.35em 0.5em;
+  font-size:14px;
+}
+.ta::-webkit-scrollbar { 
+    display: none; 
 }
