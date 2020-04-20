@@ -28,6 +28,9 @@
 }
 
 
+
+
+
 #editor{
   position: fixed;
   left:50px;
@@ -82,6 +85,10 @@
 }
 
 
+
+
+
+
 #select_opt{
   position: fixed;
   top:55px;
@@ -131,36 +138,15 @@
 
   border-right:2px solid gray;
 }
-#select_tag1{
-  position: absolute;
-  left:5px;
-  top:5px;
-  width:190px;
-  height:290px;
-
-}
-#select_tag2{
-  position: absolute;
-  left:195px;
-  top:5px;
-  width:190px;
-  height:290px;
-
-  padding-left:5px;
-  border-left:2px solid gray;
-}
 #insert_option{
 	position: absolute;
-	overflow:hidden; 
 	left:5px;
 	top:5px;
 	width:550px; 
 	height:290px;
-
 }
 #storage_list{
 	position: absolute;
-	overflow:hidden; 
 	left:5px;
 	top:5px;
 	width:550px; 
@@ -168,22 +154,65 @@
 
 	border:2px solid gray;
 }
+#storage_list::-webkit-scrollbar{
+	display: none; 
+}
+#storage_list_table{
+	margin:0px;
+	width:100%;
+}
+
+
+
+
 
 
 .black_btn{
-  position: absolute;
   border:2px solid #383838;
-  right:5px;
-  top:5px;
-  width:50px;
-  height:290px;
   padding:10px;
 
-  background-color:transparent;
+  background-color:white;
 
   font-size:14px;
 }
+#select_opt_finish{
+  position: absolute;
+  right:5px;
+  top:60px;
+  left:auto;
+  height:235px;
+  width:50px;
+}
+#select_opt_x{
+  position: absolute;
+  right:5px;
+  top:5px;
+  left:auto;
+  height:50px;
+  width:50px;
+}
 
-.input{
-	font-size:10px;
+
+
+
+
+
+.ta{
+	width:90%;
+	height:100px;
+	display:inline-block;
+  padding: 0.35em 0.5em;
+  font-size:14px;
+}
+.ta::-webkit-scrollbar { 
+    display: none; 
+}
+
+
+
+
+
+
+.pushit_select{
+  border:5px solid red;
 }

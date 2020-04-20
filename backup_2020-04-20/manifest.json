@@ -3,29 +3,26 @@
  */ 
 
 {
+  "name": "pushit extension",
   "manifest_version": 2,
-  "name": "crawling_container_constructor",
   "version": "0.1",
   "permissions": [
-    "storage"
+    "storage", "tabs"
   ],
   "content_scripts": [
     {
       "matches": [
-        "http://hushit.live/service/post_page.html"
-      ],
-      "js": [
-        "post.js"
-      ]
-    },
-    {
-      "matches": [
         "<all_urls>"
+      ],
+      "exclude_matches": [
+        "https://pushit.live/*",
+        "https://accounts.google.com/*"
       ],
       "js": [
       	"library/jquery-3.4.1.min.js",
         "crawling_container.js",
         "ui_maker.js",
+        "ui_function.js",
         "storage.js"
       ],
       "css": ["decorating.css"]

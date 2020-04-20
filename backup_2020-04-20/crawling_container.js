@@ -1,31 +1,16 @@
 console.log("extension start!");
 
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-    console.log("On Off switch");
-
-    if(On_Off=="On"){
-    	$("#editor").css("visibility", "hidden");
-    	$mask.css("visibility", "hidden")
-    	On_Off="Off";
-    }
-    else{
-		$("#editor").css("visibility", "visible");
-    	$mask.css("visibility", "visible")
-    	On_Off="On";
-    }
-
-    data="ok"
-    sendResponse({data: data, success: true});
-});
+var template_data_list=Array();
 
 var template_data={};
-template_data['string']="";
+template_data['string']="[\n";
 template_data['stage']=0;
 template_data['properties_index']=0;
 template_data['item_selector']="";
-template_data['closing_string']="\n\t\t]\n\t}\n}"
+template_data['closing_string']=""
+template_data_list.push(JSON.parse(JSON.stringify(template_data)));
+template_data['closing_string']="\n\t\t]\n\t}\n}\n]"
 
-var On_Off="On"
 var target;
 var selector;
 var w_height=window.innerHeight;
@@ -33,18 +18,67 @@ var w_width;
 var $mask = $('<div id="screenshot_mask"></div>').css("border-width", "0 0 " + w_height + "px 0");
 $("body").append($mask);
 
+chrome.storage.local.get(['On_Off'], function(result) {
+	if(!result.On_Off){
+		chrome.storage.local.set({On_Off: "On"})
+	}
+	else if(result.On_Off=="On"){
+		$("#editor").css("visibility", "visible");
+    	$mask.css("visibility", "visible")
+
+    	document.addEventListener("mouseover", check_1, false);
+		document.addEventListener("keydown", show, false);
+	}
+	else if(result.On_Off="Off"){
+		$("#editor").css("visibility", "hidden");
+    	$mask.css("visibility", "hidden")
+	}
+})
+
+chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+	console.log(request.data)
+	if(request.data=="On_Off"){
+		chrome.storage.local.get(['On_Off'], function(result) {
+			if(result.On_Off=="On"){
+				$("#editor").css("visibility", "hidden");
+		    	$mask.css("visibility", "hidden")
+		    	chrome.storage.local.set({On_Off: "Off"})
+
+		    	document.removeEventListener("mouseover", check_1, false);
+		    	document.removeEventListener("keydown", show, false);
+			}
+			else if(result.On_Off="Off"){
+				$("#editor").css("visibility", "visible");
+		    	$mask.css("visibility", "visible")
+		    	chrome.storage.local.set({On_Off: "On"})
+
+		    	document.addEventListener("mouseover", check_1, false);
+		    	document.addEventListener("keydown", show, false);
+			}
+		})	
+	}
+	else if(request.data="go_login_page"){
+		window.location.href="https://pushit.live/"
+	}
+
+    data="ok"
+    sendResponse({data: data, success: true});
+});
 //$(document).on('click', function(e) { 
 	//var top = window.pageYOffset + e.target.getBoundingClientRect().top;
 	//data=document.querySelector(extract_css_selector(e.target));
 //}); 
 
-document.addEventListener("mouseover", check_1, false);
+
+
+
 function check_1(event){
 	target=event.target;
 	drawing();
 }
 
 function drawing(){
+	console.log(target);
 	var height = window.innerHeight;
   	var width = $(document).width();
 	var startY= target.getBoundingClientRect().top;
@@ -59,16 +93,15 @@ function drawing(){
 	$mask.css("border-width", [top + 'px', right + 'px', bottom + 'px', left + 'px'].join(' '));
 }
 
-document.addEventListener("keydown", show, false);
 function show(event){
 	let key = event.keyCode;
 	if(key==83){
 		selector=extract_css_selector(target);
-		console.log("target>>");
+		console.log("\n\n"+"target>>");
 		console.log("element : " + target)
 		console.log("selector : " + selector)
 		console.log("querySelector : ");
-		console.log(document.querySelector(selector));
+		console.log(document.querySelector(selector)+"\n\n");
 
 		w_height = window.innerHeight;
   		w_width = $(document).width();

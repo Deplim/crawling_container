@@ -105,6 +105,25 @@ $("#select_opt_finish").on('click', select_opt_close)
 
 
 
+
+
+function select_opt_x(){
+	$("#select_opt").css("visibility","hidden");
+	$("#ui_html2").css("visibility","hidden");
+	$("#ui_html3").css("visibility","hidden");
+	$("#ui_html4").css("visibility","hidden");
+	$("#ui_html6").css("visibility","hidden");
+	$("#editor").css("visibility","visible");
+}
+$("#select_opt_x").on('click', select_opt_x)
+
+
+
+
+
+
+
+
 function add_list(){
 	console.log("checkasdfasdfasdf");
 	template_data['string']=template_data['string']+"\n\t\t]\n\t}\n},\n";
@@ -113,6 +132,7 @@ function add_list(){
 	template_data['item_selector']="";
 }
 $("#add").on('click', add_list)
+
 
 
 
