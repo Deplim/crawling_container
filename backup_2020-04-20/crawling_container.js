@@ -73,6 +73,10 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 
 
 function check_1(event){
+	if(event.target==document.getElementById("main_mask")){
+		console.log("false")
+		return false;
+	}
 	target=event.target;
 	drawing();
 }

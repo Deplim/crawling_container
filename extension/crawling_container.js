@@ -11,11 +11,16 @@ template_data['closing_string']=""
 template_data_list.push(JSON.parse(JSON.stringify(template_data)));
 template_data['closing_string']="\n\t\t]\n\t}\n}\n]"
 
-var before_target=0;
 var target=0;
 var selector;
 var w_height=window.innerHeight;
 var w_width;
+var $mask = $('<div id="main_mask"></div>');
+var $mask2 = $('<div class="sub_mask"></div>');
+var $mask3 = $('<div class="sub_mask"></div>');
+$("body").append($mask);
+$("body").append($mask2);
+$("body").append($mask3);
 
 chrome.storage.local.get(['On_Off'], function(result) {
 	if(!result.On_Off){
@@ -23,12 +28,18 @@ chrome.storage.local.get(['On_Off'], function(result) {
 	}
 	else if(result.On_Off=="On"){
 		$("#editor").css("visibility", "visible");
+		$mask.css("visibility", "visible");
+		$mask2.css("visibility", "visible");
+		$mask3.css("visibility", "visible");
 
     	document.addEventListener("mouseover", check_1, false);
 		document.addEventListener("keydown", show, false);
 	}
 	else if(result.On_Off="Off"){
 		$("#editor").css("visibility", "hidden");
+		$mask.css("visibility", "hidden");
+		$mask2.css("visibility", "hidden");
+		$mask3.css("visibility", "hidden");
 	}
 })
 
@@ -39,9 +50,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			if(result.On_Off=="On"){
 				$("#editor").css("visibility", "hidden");
 		    	chrome.storage.local.set({On_Off: "Off"})
-		    	$(target).removeClass("pushit_select");
-				$(target).next().removeClass("pushit_select_sb")
-				$(target).next().next().removeClass("pushit_select_sb")
+				$mask.css("visibility", "hidden");
+				$mask2.css("visibility", "hidden");
+				$mask3.css("visibility", "hidden");
 		    	
 		    	document.removeEventListener("mouseover", check_1, false);
 		    	document.removeEventListener("keydown", show, false);
@@ -49,6 +60,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 			else if(result.On_Off="Off"){
 				$("#editor").css("visibility", "visible");
 		    	chrome.storage.local.set({On_Off: "On"})
+		    	$mask.css("visibility", "visible");
+				$mask2.css("visibility", "visible");
+				$mask3.css("visibility", "visible");
 
 		    	document.addEventListener("mouseover", check_1, false);
 		    	document.addEventListener("keydown", show, false);
@@ -71,26 +85,50 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 
 
 function check_1(event){
-	before_target=target;
+	if(event.target==editor || event.target.parentNode==editor || event.target==document.getElementById("main_mask")){
+		return;
+	}
 	target=event.target;
 	drawing();
 }
 
 function drawing(){
-	if(before_target!=target){
-		if(before_target!=0){
-			$(before_target).removeClass("pushit_select")
-		    $(before_target).next().removeClass("pushit_select_sb")
-		    $(before_target).next().next().removeClass("pushit_select_sb")
-		}
-		$(target).addClass("pushit_select");
-		$(target).next().addClass("pushit_select_sb")
-		$(target).next().next().addClass("pushit_select_sb")
+	matching_mask(target, $mask, 1);
+	
+	if(target.nextElementSibling){
+		matching_mask(target.nextElementSibling, $mask2, 2);
+		$mask2.css("visibility", "visible")
 	}
+	else{
+		$mask2.css("visibility", "hidden")
+	}
+
+	if(target.nextElementSibling){
+		if(target.nextElementSibling.nextElementSibling){
+			matching_mask(target.nextElementSibling.nextElementSibling, $mask3, 3);
+			$mask3.css("visibility", "visible")
+		}
+		else{
+			$mask3.css("visibility", "hidden")
+		}
+	}
+	else{
+		$mask3.css("visibility", "hidden")
+	}
+	
 }
+
+function matching_mask(temp_target, temp_mask ,c){
+	$(temp_mask).css("top", window.pageYOffset+temp_target.getBoundingClientRect().top)
+	$(temp_mask).css("left", window.pageXOffset+temp_target.getBoundingClientRect().left)
+	$(temp_mask).css("width", temp_target.getBoundingClientRect().width)
+	$(temp_mask).css("height", temp_target.getBoundingClientRect().height)
+}	
 
 function show(event){
 	document.removeEventListener("mouseover", check_1, false);
+	document.removeEventListener("keydown", show, false);
+	
 	let key = event.keyCode;
 	if(key==83){
 		selector=extract_css_selector(target);
@@ -132,16 +170,22 @@ function show(event){
 		$("#editor").css("visibility", "hidden");
 	}
 	if(key==65){
-		before_target=target;
-		target=target.parentNode;
-		drawing();
+		document.addEventListener("keydown", show, false);
 		document.addEventListener("mouseover", check_1, false);
+		if(target.parentNode && target.parentNode!=undefined){
+			before_target=target;
+			target=target.parentNode;
+			drawing();
+		}
 	}
 	if(key==68){
-		before_target=target;
-		target=target.children[0];
-		drawing();
+		document.addEventListener("keydown", show, false);
 		document.addEventListener("mouseover", check_1, false);
+		if(target.children[0] && target.children[0]!=undefined){
+			before_target=target;
+			target=target.children[0];
+			drawing();
+		}
 	}
 }
 

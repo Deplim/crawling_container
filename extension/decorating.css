@@ -40,7 +40,7 @@
 
   opacity: 0.8;
   background-color:#c5e0b4;
-  z-index:2147483648;
+  z-index:2147483647;
 }
 #backward{
   position: absolute;
@@ -97,7 +97,7 @@
 
   background-color:#c5e0b4; 
   visibility:hidden;
-  z-index:2147483648;
+  z-index:2147483647;
 
   font-family:"Poppins" ,sans-serif;
 }
@@ -209,13 +209,31 @@
 }
 
 
+#main_mask{
+	pointer-events: none;
+	display: block;
 
+	position:absolute;
+	top:0px;
+	left:0px;
 
+	border: 1px solid red;
+	box-sizing:border-box;
+	background-color:rgba( 255, 0, 0, 0.2 );
 
-
-.pushit_select{
-  border:3px dashed red;
+	z-index: 2147483646;
 }
-.pushit_select_sb{
-  border:2px dashed #004cff;
+.sub_mask{
+	pointer-events: none;
+	display: block;
+
+	position:absolute;
+	top:0px;
+	left:0px;
+
+	border: 1px solid green;
+	box-sizing:border-box;
+	background-color:rgba( 0, 255, 0, 0.2);
+
+	z-index: 2147483646;
 }
