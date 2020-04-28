@@ -24,11 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		success : function(data) { 
 			if(data.msg=="success"){
 				document.getElementById("text-holder").innerHTML="PUSHIT 로그인 : "+data.data;
-				document.getElementById("post").style.visibility="hidden";
+				document.getElementById("post").innerHTML="Post";
+				document.getElementById('post').addEventListener('click', post_templates);
+				document.getElementById('post').removeEventListener('click', go_login_page);
 			}
 			else{
 				document.getElementById("text-holder").innerHTML="PUSHT 로그인이 되어있지 않습니다. 먼저 로그인을 해주세요";
 				document.getElementById("post").innerHTML="Login";
+				document.getElementById('post').removeEventListener('click', post_templates);
 				document.getElementById('post').addEventListener('click', go_login_page);
 			}
 		},
@@ -71,4 +74,29 @@ function go_login_page(){
         });
     });
     window.close();
+}
+
+function post_templates(){
+	document.getElementById("text-holder").innerHTML="";
+
+    chrome.storage.local.get(['template_backup'], function(result) {
+        for(var i in result.template_backup)
+        {
+            var template_backup=result.template_backup[i];
+
+            $.ajax({
+                method : "POST",
+                url : "http://pushit.live/api/v1_extension/set_rss.php",
+                data : {"userIdx" : template_backup["userIdx"], "title" : template_backup["title"], "content" : template_backup["content"], "targetUrl" : template_backup["targetUrl"], "tag1" : template_backup["tag1"], "tag2" : template_backup["tag2"], "template" : template_backup["template"]}, 
+                success : function(data) { 
+                    document.getElementById("text-holder").innerHTML=document.getElementById("text-holder").innerHTML+"post success <br><br>";
+                    chrome.storage.local.set({template_backup: ""})
+                },
+                error : function(e) {
+                    document.getElementById("text-holder").innerHTML=document.getElementById("text-holder").innerHTML+"post error <br><br>";
+                    chrome.storage.local.set({template_backup: ""})
+                }
+            });
+        }           
+    });
 }

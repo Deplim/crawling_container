@@ -61,7 +61,34 @@ function select_opt_close(e){
 		$("#editor").css("visibility","visible");
 	}
 	else if(current_selector==5){
-		check_login();
+		var final_tem=template_data["string"]+template_data["closing_string"];
+		var dic={}
+		dic["userIdx"]=document.getElementById("insert_userIdx").value;
+		dic["title"]=document.getElementById("insert_title").value;
+		dic["content"]=document.getElementById("insert_content").value;
+		dic["targetUrl"]=document.getElementById("insert_targetUrl").value;
+		dic["tag1"]=document.getElementById("insert_tag1").value;
+		dic["tag2"]=document.getElementById("insert_tag2").value;
+		dic["template"]=final_tem;
+		dic["template_data"]=template_data;
+
+		chrome.storage.local.get(['template_backup'], function(result) {
+			console.log(result.template_backup)
+			if(result.template_backup && result.template_backup!="" && result.template_backup!=undefined){
+				var t=result.template_backup
+				t.push(dic)
+				console.log("\n\nstorage>>")
+				console.log(t)
+				chrome.storage.local.set({template_backup: t})
+			}
+			else{
+				var t=Array();
+				t.push(dic)
+				console.log("\n\nstorage>>")
+				console.log(t)
+				chrome.storage.local.set({template_backup: t})
+			}
+		});
 
 		$("#select_opt").css("visibility","hidden");
 		$("#ui_html6").css("visibility","hidden");
