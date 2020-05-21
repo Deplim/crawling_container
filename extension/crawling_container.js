@@ -7,9 +7,8 @@ template_data['string']="[\n";
 template_data['stage']=0;
 template_data['properties_index']=0;
 template_data['item_selector']="";
-template_data['closing_string']=""
-template_data_list.push(JSON.parse(JSON.stringify(template_data)));
-template_data['closing_string']="\n\t\t]\n\t}\n}\n]"
+template_data['closing_string']="]"
+
 
 var target=0;
 var selector;
@@ -18,8 +17,9 @@ var w_width;
 var $mask = $('<div id="main_mask"></div>');
 $("body").append($mask);
 
+var sub_masks_count=20;
 var sub_masks=Array();
-for(var i=0; i<20; i++){
+for(var i=0; i<sub_masks_count; i++){
 	$temp_mask=$('<div class="sub_mask"></div>')
 	sub_masks.push($temp_mask)
 	$("body").append($temp_mask);
@@ -32,7 +32,7 @@ chrome.storage.local.get(['On_Off'], function(result) {
 	else if(result.On_Off=="On"){
 		$("#editor").css("visibility", "visible");
 		$mask.css("visibility", "visible");
-		for(var i=0; i<20; i++){
+		for(var i=0; i<sub_masks_count; i++){
 			$(sub_masks[i]).css("visibility", "visible")
 		}
 
@@ -42,7 +42,7 @@ chrome.storage.local.get(['On_Off'], function(result) {
 	else if(result.On_Off="Off"){
 		$("#editor").css("visibility", "hidden");
 		$mask.css("visibility", "hidden");
-		for(var i=0; i<20; i++){
+		for(var i=0; i<sub_masks_count; i++){
 			$(sub_masks[i]).css("visibility", "hidden")
 		}
 	}
@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 				$("#editor").css("visibility", "hidden");
 		    	chrome.storage.local.set({On_Off: "Off"})
 				$mask.css("visibility", "hidden");
-				for(var i=0; i<20; i++){
+				for(var i=0; i<sub_masks_count; i++){
 					$(sub_masks[i]).css("visibility", "hidden")
 				}
 		    	
@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 				$("#editor").css("visibility", "visible");
 		    	chrome.storage.local.set({On_Off: "On"})
 		    	$mask.css("visibility", "visible");
-				for(var i=0; i<20; i++){
+				for(var i=0; i<sub_masks_count; i++){
 					$(sub_masks[i]).css("visibility", "visible")
 				}
 
@@ -100,24 +100,25 @@ function check_1(event){
 }
 
 function drawing(){
-	for(var i=0; i<20; i++){
+	for(var i=0; i<sub_masks_count; i++){
 		$(sub_masks[i]).css("visibility", "hidden")
 	}
 	matching_mask(target, $mask, 1);
 	
-
-	for(var i in target.parentNode.children){
-		if(i<20){
-			if(target.parentNode.children[i]==target){
-				continue;
+	if(template_data['stage']==0){
+		for(var i in target.parentNode.children){
+			if(i<sub_masks_count){
+				if(target.parentNode.children[i]==target){
+					continue;
+				}
+				else{
+					matching_mask(target.parentNode.children[i], sub_masks[i]);
+					$(sub_masks[i]).css("visibility", "visible")
+				}
 			}
 			else{
-				matching_mask(target.parentNode.children[i], sub_masks[i]);
-				$(sub_masks[i]).css("visibility", "visible")
+				break;
 			}
-		}
-		else{
-			break;
 		}
 	}
 }

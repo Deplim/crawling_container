@@ -6,14 +6,16 @@ var target_tag1;
 var target_tag2;
 var current_selector=0;
 
+
+//<img id="get" src="https://github.com/Deplim/crawling_container/blob/master/icon/get.png?raw=true">
 var ui_html=`<img id="backward" src="https://github.com/Deplim/crawling_container/blob/master/icon/backward.png?raw=true">
-		<img id="get" src="https://github.com/Deplim/crawling_container/blob/master/icon/get.png?raw=true">
 		<img id="save" src="https://github.com/Deplim/crawling_container/blob/master/icon/save.png?raw=true">
 		<img id="add" src="https://github.com/Deplim/crawling_container/blob/master/icon/add.png?raw=true">
 		<textarea id="preview" readonly></textarea>`
 var ui_html2=`<div id="ui_html2">
 		<div id="select_property">
 			<span>&nbsp Property</span><br>
+			<textarea id="insert_property"></textarea>
 		</div>
 		<div id="select_attribute">
 			<span>&nbsp Attribute</span><br>
@@ -21,6 +23,7 @@ var ui_html2=`<div id="ui_html2">
 		<div id="select_data-type">
 			<span>&nbsp Data-type</span><br>
 		</div>
+		<span id="announcement"></span>
 		</div>`
 var ui_html3=`<div id="ui_html3">
 		<div id="select_item-type">
@@ -35,6 +38,7 @@ var ui_html4=`<div id="ui_html4">
 			</table>
 		</div>
 		</div>`
+var ui_html5='<img id="wrap-loading" src=""></img>'
 var ui_html6=`<div id="ui_html6">
 		<div id="insert_option">
 			<table id="insert_option_table">
@@ -123,8 +127,8 @@ $("#save").on('mouseover', m_over)
 $("#save").on('mouseout', m_out)
 $("#add").on('mouseover', m_over)
 $("#add").on('mouseout', m_out)
-$("#get").on('mouseover', m_over)
-$("#get").on('mouseout', m_out)
+//$("#get").on('mouseover', m_over)
+//$("#get").on('mouseout', m_out)
 
 document.getElementById("select_opt_finish").addEventListener("mouseover", m_over2, false);
 document.getElementById("select_opt_finish").addEventListener("mouseout", m_out2, false);
@@ -175,6 +179,8 @@ function item_type_option_click(e){
 	e.target.style.background="#a1a1a1";
 	target_item_type=e.target.innerHTML;
 }
+
+
 for (var i=0; i<property_option.length; i++){
 	var temp_el = document.createElement('button');
 	temp_el.innerHTML=property_option[i];

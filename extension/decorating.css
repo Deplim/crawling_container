@@ -26,7 +26,9 @@
 
   border-style: solid;
 }
-
+.display-none{
+  display:none;
+}
 
 
 
@@ -101,12 +103,19 @@
 
   font-family:"Poppins" ,sans-serif;
 }
+#announcement{
+  position : absolute;
+  left:5px;
+  top:282px;
+
+  font-size:14px;
+}
 #select_property{
   position: absolute;
   left:5px;
   top:5px;
   width:190px;
-  height:290px;
+  height:275px;
 
 }
 #select_attribute{
@@ -114,7 +123,7 @@
   left:195px;
   top:5px;
   width:190px;
-  height:290px;
+  height:275px;
 
   padding-left:5px;
   border-left:2px solid gray;
@@ -124,7 +133,7 @@
   left:385px;
   top:5px;
   width:190px;
-  height:290px;
+  height:275px;
 
   padding-left:5px;
   border-left:2px solid gray;
@@ -160,6 +169,10 @@
 #storage_list_table{
 	margin:0px;
 	width:100%;
+}
+#insert_property{
+  width:174px;
+  resize:none;
 }
 
 
