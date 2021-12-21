@@ -1,3 +1,13 @@
+$(':focus').blur(); 
+
+window.onload=function (){
+	var text_inputs=document.querySelectorAll("input[type='text']")
+	for(var j=0; j<text_inputs.length; j++){
+		console.log(text_inputs[j])
+		$(text_inputs[j]).blur();
+	}
+}
+
 console.log("extension start!");
 
 var template_data_list=Array();
@@ -28,6 +38,15 @@ for(var i=0; i<sub_masks_count; i++){
 chrome.storage.local.get(['On_Off'], function(result) {
 	if(!result.On_Off){
 		chrome.storage.local.set({On_Off: "On"})
+
+		$("#editor").css("visibility", "visible");
+		$mask.css("visibility", "visible");
+		for(var i=0; i<sub_masks_count; i++){
+			$(sub_masks[i]).css("visibility", "visible")
+		}
+
+    	document.addEventListener("mouseover", check_1, false);
+		document.addEventListener("keydown", show, true);
 	}
 	else if(result.On_Off=="On"){
 		$("#editor").css("visibility", "visible");
@@ -37,7 +56,7 @@ chrome.storage.local.get(['On_Off'], function(result) {
 		}
 
     	document.addEventListener("mouseover", check_1, false);
-		document.addEventListener("keydown", show, false);
+		document.addEventListener("keydown", show, true);
 	}
 	else if(result.On_Off="Off"){
 		$("#editor").css("visibility", "hidden");
@@ -61,7 +80,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 				}
 		    	
 		    	document.removeEventListener("mouseover", check_1, false);
-		    	document.removeEventListener("keydown", show, false);
+		    	document.removeEventListener("keydown", show, true);
 			}
 			else if(result.On_Off="Off"){
 				$("#editor").css("visibility", "visible");
@@ -72,12 +91,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
 				}
 
 		    	document.addEventListener("mouseover", check_1, false);
-		    	document.addEventListener("keydown", show, false);
+		    	document.addEventListener("keydown", show, true);
 			}
 		})	
-	}
-	else if(request.data="go_login_page"){
-		window.location.href="https://pushit.live/"
 	}
 
     data="ok"
@@ -96,6 +112,7 @@ function check_1(event){
 		return;
 	}
 	target=event.target;
+
 	drawing();
 }
 
@@ -132,10 +149,13 @@ function matching_mask(temp_target, temp_mask){
 
 function show(event){
 	document.removeEventListener("mouseover", check_1, false);
-	document.removeEventListener("keydown", show, false);
+	document.removeEventListener("keydown", show, true);
+	document.addEventListener("keydown", lock_input, true);
 	
 	let key = event.keyCode;
 	if(key==83){
+		event.stopPropagation();
+
 		selector=extract_css_selector(target);
 		console.log("\n\n"+"target>>");
 		console.log("element : " + target)
@@ -159,7 +179,7 @@ function show(event){
 			$("#ui_html4").css("visibility", "hidden");
 			$("#ui_html6").css("visibility", "hidden");
 
-			$('#select_attribute').html("<span>&nbsp Attribute</span><br>");
+			$('#select_attribute').html("<span>&nbsp Attribute</span><br><br><textarea id='insert_attribute'></textarea>");
 			var temp_att=Array();
 			temp_att.push("text");
 			for(var t=0; t<target.attributes.length; t++){
@@ -175,8 +195,12 @@ function show(event){
 		$("#editor").css("visibility", "hidden");
 	}
 	if(key==65){
-		document.addEventListener("keydown", show, false);
+		event.stopPropagation();
+
+		document.addEventListener("keydown", show, true);
 		document.addEventListener("mouseover", check_1, false);
+		document.removeEventListener("keydown", lock_input, true);
+
 		if(target.parentNode && target.parentNode!=undefined){
 			before_target=target;
 			target=target.parentNode;
@@ -184,8 +208,12 @@ function show(event){
 		}
 	}
 	if(key==68){
-		document.addEventListener("keydown", show, false);
+		event.stopPropagation();
+
+		document.addEventListener("keydown", show, true);
 		document.addEventListener("mouseover", check_1, false);
+		document.removeEventListener("keydown", lock_input, true);
+
 		if(target.children[0] && target.children[0]!=undefined){
 			before_target=target;
 			target=target.children[0];
@@ -198,9 +226,11 @@ function extract_css_selector(el){
     if (!(el instanceof Element)) 
 	    return;
 	var path = [];
+
+	var target=el
 	while (el.nodeType === Node.ELEMENT_NODE) {
 	    var selector = el.nodeName.toLowerCase();
-	    if (el.id) {
+	    if ((el.id)&&(target!=el)) {
 	        selector += '#' + el.id;
 	        path.unshift(selector);
 	        break;
@@ -215,4 +245,8 @@ function extract_css_selector(el){
 	    el = el.parentNode;
 	}
 	return path.join(" > ");
+}
+
+function lock_input(event){
+	event.stopPropagation();
 }

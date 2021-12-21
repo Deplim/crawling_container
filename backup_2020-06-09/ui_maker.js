@@ -14,14 +14,14 @@ var ui_html=`<img id="backward" src="https://github.com/Deplim/crawling_containe
 		<textarea id="preview" readonly></textarea>`
 var ui_html2=`<div id="ui_html2">
 		<div id="select_property">
-			<span>&nbsp Property</span><br>
+			<span>&nbsp Property</span><br><br>
 			<textarea id="insert_property"></textarea>
 		</div>
 		<div id="select_attribute">
-			<span>&nbsp Attribute</span><br>
+			<span>&nbsp Attribute</span><br><br>
 		</div>
 		<div id="select_data-type">
-			<span>&nbsp Data-type</span><br>
+			<span>&nbsp Data-type</span><br><br>
 		</div>
 		<span id="announcement"></span>
 		</div>`
@@ -38,7 +38,6 @@ var ui_html4=`<div id="ui_html4">
 			</table>
 		</div>
 		</div>`
-var ui_html5='<img id="wrap-loading" src=""></img>'
 var ui_html6=`<div id="ui_html6">
 		<div id="insert_option">
 			<table id="insert_option_table">
@@ -68,6 +67,12 @@ var select_opt = document.createElement('div');
 select_opt.id = "select_opt";
 document.body.appendChild(select_opt);
 
+var load_img = document.createElement('img');
+load_img.id = "wrap-loading";
+load_img.className="display-none";
+load_img.src="https://github.com/Deplim/crawling_container/blob/master/icon/Loading2.gif?raw=true"
+document.body.appendChild(load_img);
+
 editor.innerHTML=ui_html;
 select_opt.innerHTML=ui_html2+ui_html3+ui_html4+ui_html6+"<button id='select_opt_finish' class='black_btn'>   F<br>i<br>n<br>i<br>s<br>h  </button> <button id='select_opt_x' class='black_btn'>   X  </button>"
 
@@ -79,11 +84,9 @@ document.getElementById("preview").placeholder = "미리보기";
 
 
 function m_over(e){
-	e.target.style.border="2px dashed gray";
 	e.target.style.cursor="pointer";
 }
 function m_out(e){
-	e.target.style.border=null;
 	e.target.style.cursor="default";
 }
 function m_over2(e){
@@ -184,7 +187,7 @@ function item_type_option_click(e){
 for (var i=0; i<property_option.length; i++){
 	var temp_el = document.createElement('button');
 	temp_el.innerHTML=property_option[i];
-	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black;"
+	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black; border:initial;"
 	temp_el.onclick="property_option_click();";
 	$(temp_el).on("click" ,property_option_click);
 	$('#select_property').append(temp_el);
@@ -193,7 +196,7 @@ for (var i=0; i<property_option.length; i++){
 for (var i=0; i<data_type_option.length; i++){
 	var temp_el = document.createElement('button');
 	temp_el.innerHTML=data_type_option[i];
-	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black;"
+	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black; border:initial;"
 	$(temp_el).on("click" ,data_type_option_click);
 	$('#select_data-type').append(temp_el);
 	d_op_buttons.push(temp_el);
@@ -201,7 +204,7 @@ for (var i=0; i<data_type_option.length; i++){
 for (var i=0; i<item_type_option.length; i++){	
 	var temp_el = document.createElement('button');
 	temp_el.innerHTML=item_type_option[i];
-	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black;"
+	temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black; border:initial;"
 	$(temp_el).on("click" ,item_type_option_click);
 	$('#select_item-type').append(temp_el);
 	i_op_buttons.push(temp_el);
@@ -211,6 +214,9 @@ function set_attribute_option(at_array){
 	var attribute_option=at_array;
 	var a_op_buttons=Array();
 	function attribute_option_click(e){
+		$("#insert_attribute").val($(e.target).text())
+		$("#announcement").html($(target).attr($(e.target).text()))	
+
 		for(o in a_op_buttons){
 			a_op_buttons[o].style.background="white";
 		}
@@ -220,7 +226,7 @@ function set_attribute_option(at_array){
 	for (var i=0; i<attribute_option.length; i++){
 		var temp_el = document.createElement('button');
 		temp_el.innerHTML=attribute_option[i];
-		temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black;"
+		temp_el.style="width:90px; height:30px; font-size:14px; background-color:white; color:black; border:initial;"
 		$(temp_el).on("click" ,attribute_option_click);
 	 	$('#select_attribute').append(temp_el);
 		a_op_buttons.push(temp_el);

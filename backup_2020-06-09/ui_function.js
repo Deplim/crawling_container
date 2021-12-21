@@ -11,7 +11,12 @@ function select_opt_close(e){
 			template_data_list.push(JSON.parse(JSON.stringify(template_data)))
 
 			if(target_item_type=="list"){
-				temp_selector=selector.replaceAt(selector.lastIndexOf("nth-child")+10,"n")
+				if(selector.lastIndexOf("nth-child")!=-1){
+					temp_selector=selector.replaceAt(selector.lastIndexOf("nth-child")+10,"n")
+				}
+				else{
+					temp_selector=selector
+				}
 				temp_string=temp_string+'{\n\t"item": {\n\t\t"selector": "'+temp_selector+'",\n\t\t"item-type": "'+target_item_type+'",\n\t\t"properties": [\n';
 			}
 			else{
@@ -22,11 +27,12 @@ function select_opt_close(e){
 			template_data['closing_string']="\n\t\t]\n\t}\n}\n]"
 		}
 		else{
+			// setting property
 			if($("#insert_property").val()){
 				target_property=$("#insert_property").val()
 			}
 			if(target_property==undefined || target_attribute==undefined || target_attribute==null || target_data_type==undefined){
-				console.log("hi")
+				console.log(target_property + "\n" + target_attribute + "\n" + target_data_type)
 				$("#announcement").html(" * 지정되지 않은 요소가 있습니다. * ")	
 				return
 			}
@@ -35,13 +41,16 @@ function select_opt_close(e){
 				template_data_list.push(JSON.parse(JSON.stringify(template_data)))
 			}
 
-
+			//setting attribute
+			target_attribute = $("#insert_attribute").val()
 			if(target_attribute=="text") {
 				temp_attribute=""
 			}
 			else {
 				temp_attribute=',\n\t\t\t\t"attr": '+'"'+target_attribute+'"'
 			}
+
+			//setting data_type
 			if(target_data_type=="date"){
 				temp_format=',\n\t\t\t\t"format": "yy.MM.dd hh:mm:ss"'
 			}	
@@ -94,7 +103,9 @@ function select_opt_close(e){
 
 	//console.log(template_data_list)
 	document.addEventListener("mouseover", check_1, false);
-	document.addEventListener("keydown", show, false);
+	document.addEventListener("keydown", show, true);
+	document.removeEventListener("keydown", lock_input, true);
+
 	console.log("\n\n\n")
 }
 
@@ -113,7 +124,8 @@ function select_opt_x(){
 	$("#editor").css("visibility","visible");
 
 	document.addEventListener("mouseover", check_1, false);
-	document.addEventListener("keydown", show, false);
+	document.addEventListener("keydown", show, true);
+	document.removeEventListener("keydown", lock_input, true);
 }
 $("#select_opt_x").on('click', select_opt_x)
 
@@ -180,9 +192,10 @@ $('#backward').on('click', backward)
  				}
 
  			}
- 			temp_preview=temp_preview+"--------------------------------\n"
+ 			temp_preview=temp_preview+"----------------------------------------------\n"
  		}
 
  		$("#preview").html(temp_preview);
  	} 
+
  }

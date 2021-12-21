@@ -4,18 +4,29 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 	document.body.style.width="200px";
-    var swc = document.getElementById('link');
-    swc.style.display="block";
-    swc.style.textAlign="center";
+    var swc = document.getElementById('switch');
+    swc.style.marginLeft="70px";
+    
+	chrome.storage.local.get(['On_Off'], function(result) {
+    	if(result.On_Off=="On"){
+    		$(swc).prop("checked", true)
+    	}
+    	else{
+    		 $(swc).prop("checked", false)
+    	}
+    })
+
+
     // onClick's logic below:
 
-    var post = document.getElementById('post');
-    post.style.display="block";
-    post.style.textAlign="center";
+    var post=document.getElementById("post")
+    var instructions=document.getElementById("instructions")
 
     for(var i in document.getElementsByClassName("hr")){
     	document.getElementsByClassName("hr")[i].style="border:thin solid black;";
     }
+
+    document.getElementById('instructions').addEventListener('click', go_instructions_page);
 
     $.ajax({
 		method : "POST",
@@ -37,14 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});	
 
-    swc.addEventListener('click', function() {
+    swc.addEventListener('change', function() {
         On_Off();
-    });
-    swc.addEventListener('mouseover', function(e) {
-        e.target.style.cursor="pointer";
-    });
-    swc.addEventListener('mouseout', function(e) {
-        e.target.style.cursor="default";
     });
 
 
@@ -54,9 +59,28 @@ document.addEventListener('DOMContentLoaded', function() {
     post.addEventListener('mouseout', function(e) {
         e.target.style.cursor="default";
     });
+
+    instructions.addEventListener('mouseover', function(e) {
+        e.target.style.cursor="pointer";
+    });
+    instructions.addEventListener('mouseout', function(e) {
+        e.target.style.cursor="default";
+    });
+
+    document.addEventListener("keydown", function(event){
+    	var text="keydown";
+    	document.getElementById("text-holder").innerHTML=event.keyCode;
+    	
+	    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+	        chrome.tabs.sendMessage(tabs[0].id, {data: text, keyCode: event.keyCode}, function(response) {
+	        });
+	    });
+	    window.close();
+    })
 });
 
 function On_Off() {
+
     var text="On_Off";
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {data: text}, function(response) {
@@ -65,10 +89,11 @@ function On_Off() {
 }
 
 function go_login_page(){
-	var text="go_login_page";
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {data: text}, function(response) {
-        });
-    });
+	window.open("https://pushit.live/");
+    window.close();
+}
+
+function go_instructions_page(){
+	window.open("https://www.notion.so/PUSHIT-extension-2fdcd50277d1466fb3965f2969e0aee3");
     window.close();
 }

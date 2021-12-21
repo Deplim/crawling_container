@@ -1,13 +1,14 @@
-$("#save").on("click", function(){
+document.getElementById("save").addEventListener("click", save_click, false);
+function save_click(){
 	document.removeEventListener("mouseover", check_1, false);
-	document.removeEventListener("keydown", show, false);
+	document.removeEventListener("keydown", show, true);
 	current_selector=5;
 
 	$("#insert_title").attr("value", document.title)
 	$("#insert_targetUrl").attr("value", window.location.href)
 
 	w_height = window.innerHeight;
-  	w_width = $(document).width();
+  	w_width = window.innerWidth;
 
 	$("#ui_html3").css("visibility", "hidden");
 	$("#ui_html2").css("visibility", "hidden");
@@ -20,7 +21,7 @@ $("#save").on("click", function(){
 
 	$("#editor").css("visibility", "hidden");
 
-})
+}
 
 function check_login(){
 	console.log("check login")
@@ -30,6 +31,7 @@ function check_login(){
 		dataType:'JSON',
 		success : function(data) { 
 			if(data.msg=="success"){
+				console.log("login 확인함")
 				post_templates()
 			}
 			else{
@@ -46,16 +48,31 @@ function check_login(){
 }
 
 function post_templates(){
-	console.log("check")
 	var final_tem=template_data["string"]+template_data["closing_string"];
 	var dic={}
 	dic["title"]=document.getElementById("insert_title").value;
 	dic["content"]=document.getElementById("insert_content").value;
 	dic["targetUrl"]=document.getElementById("insert_targetUrl").value;
-	dic["tag1"]=document.getElementById("insert_tag1").value;
-	dic["tag2"]=document.getElementById("insert_tag2").value;
+	dic["tag"]=document.getElementById("insert_tag1").value;
 	dic["template"]=final_tem;
 	//dic["template_data"]=template_data;
+
+	console.log(dic)
+
+	$("#wrap-loading").css("top", w_height/2-125);
+	$("#wrap-loading").css("left", w_width/2-125);
+	$('#wrap-loading').removeClass('display-none');
+
+	$("#editor").css("visibility", "hidden");
+	chrome.storage.local.set({On_Off: "Off"})
+	$mask.css("visibility", "hidden");
+	for(var i=0; i<sub_masks_count; i++){
+		$(sub_masks[i]).css("visibility", "hidden")
+	}
+	
+	document.removeEventListener("mouseover", check_1, false);
+	document.removeEventListener("keydown", show, true);
+			
 
     $.ajax({
         method : "POST",
@@ -63,12 +80,26 @@ function post_templates(){
         data : dic,
         dataType:'JSON',
         success : function(data) { 
- 			console.log(data)
             alert("post success")
         },
         error : function(e) {
             alert("post error")
-        }
+        },
+	    complete : function(){
+	        console.log("post complete")
+
+	        $('#wrap-loading').addClass('display-none');
+
+	        $("#editor").css("visibility", "visible");
+	    	chrome.storage.local.set({On_Off: "On"})
+	    	$mask.css("visibility", "visible");
+			for(var i=0; i<sub_masks_count; i++){
+				$(sub_masks[i]).css("visibility", "visible")
+			}
+
+	    	document.addEventListener("mouseover", check_1, false);
+	    	document.addEventListener("keydown", show, true);
+	    }
     });  
 }
 

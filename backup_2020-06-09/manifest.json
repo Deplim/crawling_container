@@ -16,7 +16,8 @@
       ],
       "exclude_matches": [
         "https://pushit.live/*",
-        "https://accounts.google.com/*"
+        "https://accounts.google.com/*",
+        "https://www.notion.so/*"
       ],
       "js": [
       	"library/jquery-3.4.1.min.js",
